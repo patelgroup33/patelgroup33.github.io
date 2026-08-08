@@ -1,5 +1,7 @@
 # DEV_PATEL.OS — Operator Profile
 
+**Live → https://patelgroup33.github.io/**
+
 A cinematic, scroll-driven personal site — built to feel like booting the operating
 system of an AI engineer. Marvel title-sequence energy, Apple precision, Linear smoothness.
 
@@ -28,11 +30,30 @@ npm run dev
 Then open **http://localhost:3000**. Toggle **MUTED → SOUND ON** (top-right) for
 the ambient/hover audio and startup chime.
 
-Production:
+Production build (static export → `out/`):
 
 ```bash
-npm run build && npm start
+npm run build
 ```
+
+## Deploy
+
+The site is a static export hosted on **GitHub Pages** at
+https://patelgroup33.github.io/ (served from the `gh-pages` branch; `main` holds
+the source). To ship an update after editing:
+
+```bash
+npm run deploy
+```
+
+That builds `out/` and force-pushes it to `gh-pages`, then triggers a Pages build.
+
+**Optional — CI auto-deploy:** a ready-made GitHub Actions workflow lives at
+`deploy/github-pages-workflow.yml`. To have every push to `main` rebuild and
+deploy automatically, grant the CLI the `workflow` scope once
+(`gh auth refresh -s workflow`), then move that file to
+`.github/workflows/deploy.yml` and push. After that you can retire the manual
+`gh-pages` branch.
 
 ## The journey (scroll top → bottom)
 

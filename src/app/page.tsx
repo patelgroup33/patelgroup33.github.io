@@ -8,7 +8,7 @@ import SectionCreator from "@/components/SectionCreator";
 import SectionExperience from "@/components/SectionExperience";
 import SectionMetrics from "@/components/SectionMetrics";
 import SectionProcess from "@/components/SectionProcess";
-import SectionContact from "@/components/SectionContact";
+import Footer from "@/components/Footer";
 
 export default function Page() {
   return (
@@ -31,8 +31,9 @@ export default function Page() {
         <div className="relative z-10 bg-gradient-to-b from-ink via-ink/90 to-ink">
           <SectionMetrics />
           <SectionProcess />
-          <SectionContact />
         </div>
+
+        <Footer />
       </main>
 
       {/* global overlays */}

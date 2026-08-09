@@ -9,7 +9,6 @@ const NAV = [
   { id: "experience", label: "EXPERIENCE" },
   { id: "metrics", label: "TELEMETRY" },
   { id: "process", label: "PIPELINE" },
-  { id: "contact", label: "UPLINK" },
 ];
 
 export default function HudOverlay() {

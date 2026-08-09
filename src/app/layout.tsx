@@ -17,14 +17,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DEV PATEL — Operator Profile",
+  metadataBase: new URL("https://patelgroup33.github.io"),
+  title: "Dev Patel Portfolio",
   description:
-    "The operating system of an AI & Software Engineer. A cinematic, scroll-driven experience.",
+    "AI & Software Engineer — a cinematic, scroll-driven portfolio.",
   authors: [{ name: "Dev Patel" }],
   openGraph: {
-    title: "DEV PATEL — Operator Profile",
-    description: "AI Engineer · Software Engineer",
+    title: "Dev Patel Portfolio",
+    description: "AI & Software Engineer — a cinematic, scroll-driven portfolio.",
+    siteName: "Dev Patel Portfolio",
+    url: "https://patelgroup33.github.io",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dev Patel Portfolio",
+    description: "AI & Software Engineer — a cinematic, scroll-driven portfolio.",
   },
 };
 

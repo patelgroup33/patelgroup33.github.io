@@ -5,8 +5,10 @@ import { registerGsap, gsap, ScrollTrigger } from "@/lib/gsap";
 import { EXPERIENCE } from "@/data/content";
 
 /**
- * A horizontal conveyor: the section pins and the track translates on scroll.
- * Each company card rotates in 3D as it crosses screen-centre.
+ * Desktop (md+): a horizontal conveyor — the section pins and the track
+ * translates on scroll; each card rotates in 3D as it crosses screen-centre.
+ * Mobile (<md): the conveyor and its 3D transforms don't work on touch and
+ * overlap the heading, so we render a plain vertical stack instead.
  */
 export default function SectionExperience() {
   const root = useRef<HTMLDivElement>(null);
@@ -14,7 +16,10 @@ export default function SectionExperience() {
 
   useEffect(() => {
     registerGsap();
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    // ---- Desktop: pinned horizontal conveyor ----
+    mm.add("(min-width: 768px)", () => {
       const trackEl = track.current!;
       const cards = gsap.utils.toArray<HTMLElement>(".exp-card");
 
@@ -35,7 +40,6 @@ export default function SectionExperience() {
         },
       });
 
-      // rotate each card based on its distance from viewport centre
       const update = () => {
         const cx = window.innerWidth / 2;
         cards.forEach((c) => {
@@ -57,27 +61,41 @@ export default function SectionExperience() {
       update();
 
       return () => ScrollTrigger.removeEventListener("refresh", update);
-    }, root);
-    return () => ctx.revert();
+    });
+
+    // ---- Mobile: reveal the stacked cards ----
+    mm.add("(max-width: 767px)", () => {
+      const ctx = gsap.context(() => {
+        gsap.utils.toArray<HTMLElement>(".exp-card-m").forEach((c) => {
+          gsap.from(c, {
+            opacity: 0,
+            y: 46,
+            filter: "blur(8px)",
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: { trigger: c, start: "top 88%" },
+          });
+        });
+      }, root);
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
     <section ref={root} id="experience" className="relative z-10">
-      <div className="relative h-screen overflow-hidden">
+      {/* ============ DESKTOP: horizontal conveyor ============ */}
+      <div className="relative hidden h-screen overflow-hidden md:block">
         {/* heading pinned top-left */}
-        <div className="pointer-events-none absolute left-6 top-16 z-20 sm:left-10">
-          <div className="mono mb-3 text-[10px] text-neon/70 sm:text-xs">
-            04 / DEPLOYMENT HISTORY
-          </div>
-          <h2 className="headline text-5xl text-white sm:text-7xl">
-            EXPERIENCE
-          </h2>
+        <div className="pointer-events-none absolute left-10 top-16 z-20">
+          <div className="mono mb-3 text-xs text-neon/70">04 / DEPLOYMENT HISTORY</div>
+          <h2 className="headline text-7xl text-white">EXPERIENCE</h2>
           <div className="mono mt-3 text-[10px] text-white/40">
             ◂ CONVEYOR · SCROLL TO ADVANCE ▸
           </div>
         </div>
 
-        {/* the conveyor track */}
         <div className="flex h-full items-center">
           <div
             ref={track}
@@ -87,7 +105,7 @@ export default function SectionExperience() {
             {EXPERIENCE.map((job, i) => (
               <article
                 key={job.company}
-                className="exp-card relative w-[86vw] flex-shrink-0 sm:w-[560px]"
+                className="exp-card relative w-[560px] flex-shrink-0"
                 style={{ transformStyle: "preserve-3d" }}
               >
                 <div
@@ -97,47 +115,12 @@ export default function SectionExperience() {
                       "radial-gradient(50% 50% at 50% 40%, rgba(255,46,46,0.22), transparent 70%)",
                   }}
                 />
-                <div className="bracket glass-strong glass relative rounded-2xl p-8 sm:p-10">
-                  <span className="b-bl" />
-                  <span className="b-br" />
-                  <div className="flex items-center justify-between">
-                    <span className="mono rounded-full border border-neon/30 bg-neon/5 px-3 py-1 text-[10px] text-neon">
-                      {job.tag}
-                    </span>
-                    <span className="mono text-[10px] text-white/40">
-                      0{i + 1} / 0{EXPERIENCE.length}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-6 text-3xl font-bold text-white sm:text-4xl">
-                    {job.company}
-                  </h3>
-                  <p className="mt-2 text-lg text-neon">{job.role}</p>
-                  <p className="mono mt-1 text-[11px] text-white/40">
-                    {job.location} · {job.period}
-                  </p>
-
-                  <div className="my-6 h-px w-full bg-gradient-to-r from-neon/40 to-transparent" />
-
-                  <ul className="space-y-3">
-                    {job.points.map((pt, k) => (
-                      <li
-                        key={k}
-                        className="flex gap-3 text-[13px] leading-relaxed text-white/65"
-                      >
-                        <span className="mono mt-0.5 text-[10px] text-neon">
-                          {String(k + 1).padStart(2, "0")}
-                        </span>
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ExpCardBody job={job} index={i} />
               </article>
             ))}
 
             {/* end cap */}
-            <div className="exp-card flex w-[60vw] flex-shrink-0 items-center justify-center sm:w-[420px]">
+            <div className="exp-card flex w-[420px] flex-shrink-0 items-center justify-center">
               <div className="text-center">
                 <div className="headline text-6xl text-white/10">/// END</div>
                 <div className="mono mt-3 text-[10px] text-neon/60">
@@ -148,6 +131,68 @@ export default function SectionExperience() {
           </div>
         </div>
       </div>
+
+      {/* ============ MOBILE: vertical stack ============ */}
+      <div className="mx-auto w-full max-w-xl px-6 py-24 md:hidden">
+        <div className="mono mb-3 text-[10px] text-neon/70">04 / DEPLOYMENT HISTORY</div>
+        <h2 className="headline text-5xl text-white">EXPERIENCE</h2>
+        <div className="mono mt-3 text-[10px] text-white/40">DEPLOYMENT LOG ↓</div>
+
+        <div className="mt-10 space-y-6">
+          {EXPERIENCE.map((job, i) => (
+            <article key={job.company} className="exp-card-m relative">
+              <ExpCardBody job={job} index={i} />
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
+  );
+}
+
+function ExpCardBody({
+  job,
+  index,
+}: {
+  job: (typeof EXPERIENCE)[number];
+  index: number;
+}) {
+  return (
+    <div className="bracket glass-strong glass relative rounded-2xl p-6 sm:p-8 md:p-10">
+      <span className="b-bl" />
+      <span className="b-br" />
+      <div className="flex items-center justify-between">
+        <span className="mono rounded-full border border-neon/30 bg-neon/5 px-3 py-1 text-[10px] text-neon">
+          {job.tag}
+        </span>
+        <span className="mono text-[10px] text-white/40">
+          0{index + 1} / 0{EXPERIENCE.length}
+        </span>
+      </div>
+
+      <h3 className="mt-5 text-2xl font-bold text-white sm:mt-6 sm:text-4xl">
+        {job.company}
+      </h3>
+      <p className="mt-2 text-base text-neon sm:text-lg">{job.role}</p>
+      <p className="mono mt-1 text-[11px] text-white/40">
+        {job.location} · {job.period}
+      </p>
+
+      <div className="my-5 h-px w-full bg-gradient-to-r from-neon/40 to-transparent sm:my-6" />
+
+      <ul className="space-y-3">
+        {job.points.map((pt, k) => (
+          <li
+            key={k}
+            className="flex gap-3 text-[13px] leading-relaxed text-white/65"
+          >
+            <span className="mono mt-0.5 text-[10px] text-neon">
+              {String(k + 1).padStart(2, "0")}
+            </span>
+            <span>{pt}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

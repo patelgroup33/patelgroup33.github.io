@@ -59,15 +59,13 @@ export default function Hero() {
           scrub: 1,
         },
       });
-      tl.to(videoWrap.current, { scale: 1.35, ease: "none" }, 0)
-        .to(hud.current, { scale: 1.12, opacity: 1, ease: "none" }, 0)
-        // intro text lifts away and clears the frame as the camera pushes in
-        .to(topText.current, { opacity: 0, yPercent: -60, ease: "none" }, 0.12)
-        .to(roleWrap.current, { opacity: 0, yPercent: 60, ease: "none" }, 0.12)
-        // second half — collapse into the boot section
-        .to(videoWrap.current, { scale: 0.62, filter: "brightness(0.5)", ease: "none" }, 0.55)
-        .to(hud.current, { opacity: 0, scale: 0.7, ease: "none" }, 0.5)
-        .to(stage.current, { opacity: 0.15, ease: "none" }, 0.72);
+      // A gentle push-in only. The avatar stays solid and simply scrolls away
+      // with the section — no shrink, no dim — so the hand-off feels fluid.
+      tl.to(videoWrap.current, { scale: 1.16, ease: "none" }, 0)
+        .to(hud.current, { scale: 1.08, ease: "none" }, 0)
+        // intro text lifts away as the camera pushes in
+        .to(topText.current, { opacity: 0, yPercent: -60, ease: "none" }, 0.15)
+        .to(roleWrap.current, { opacity: 0, yPercent: 60, ease: "none" }, 0.15);
 
       // scanning line loop
       gsap.to(scanRef.current, {
@@ -82,7 +80,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={root} className="relative h-[280vh] w-full" aria-label="Hero">
+    <section ref={root} className="relative h-[200vh] w-full" aria-label="Hero">
       {/* sticky stage keeps the video fixed while the page scrolls */}
       <div
         ref={stage}
@@ -204,7 +202,7 @@ export default function Hero() {
 
         {/* scroll cue */}
         <div className="pointer-events-none absolute bottom-5 left-1/2 z-20 hidden -translate-x-1/2 text-center sm:block" data-hud>
-          <div className="mono text-[10px] text-white/40">SCROLL TO BOOT</div>
+          <div className="mono text-[10px] text-white/40">SCROLL TO ENTER</div>
           <div className="mx-auto mt-2 h-8 w-px animate-pulse bg-gradient-to-b from-neon to-transparent" />
         </div>
       </div>

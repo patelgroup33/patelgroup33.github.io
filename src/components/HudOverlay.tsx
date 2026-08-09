@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { sound } from "@/lib/sound";
 
 const NAV = [
-  { id: "system", label: "BOOT" },
   { id: "engineer", label: "ENGINEER" },
   { id: "creator", label: "CREATOR" },
   { id: "experience", label: "EXPERIENCE" },
@@ -16,12 +15,30 @@ const NAV = [
 export default function HudOverlay() {
   const [progress, setProgress] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
-  const [active, setActive] = useState("system");
+  const [active, setActive] = useState("engineer");
 
   useEffect(() => {
+    let lastY = window.scrollY;
+    let acc = 0;
+    let lastTick = 0;
+
     const onScroll = () => {
+      const y = window.scrollY;
       const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? window.scrollY / h : 0);
+      setProgress(h > 0 ? y / h : 0);
+
+      // subtle scroll ticks — throttled by distance, pitch tracks velocity
+      if (sound.enabled) {
+        const dy = Math.abs(y - lastY);
+        acc += dy;
+        const now = performance.now();
+        if (acc > 130 && now - lastTick > 45) {
+          sound.tick(dy / 60);
+          acc = 0;
+          lastTick = now;
+        }
+      }
+      lastY = y;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -29,7 +46,13 @@ export default function HudOverlay() {
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+          if (!e.isIntersecting) return;
+          const id = e.target.id;
+          setActive((prev) => {
+            // a new section materialising → play the transition cue
+            if (prev !== id && sound.enabled) sound.transition();
+            return id;
+          });
         });
       },
       { rootMargin: "-45% 0px -45% 0px" }
@@ -46,10 +69,18 @@ export default function HudOverlay() {
   }, []);
 
   const go = (id: string) => {
+    sound.click();
     const el = document.getElementById(id);
-    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: HTMLElement, o?: object) => void } }).__lenis;
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: HTMLElement | number, o?: object) => void } }).__lenis;
     if (el && lenis) lenis.scrollTo(el, { offset: -40 });
     else el?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const goTop = () => {
+    sound.click();
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: HTMLElement | number, o?: object) => void } }).__lenis;
+    if (lenis) lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -57,7 +88,7 @@ export default function HudOverlay() {
       {/* top bar */}
       <header className="pointer-events-none fixed inset-x-0 top-0 z-[70] flex items-center justify-between px-5 py-4 sm:px-8">
         <button
-          onClick={() => go("system")}
+          onClick={goTop}
           className="pointer-events-auto flex items-center gap-2"
           data-cursor
         >

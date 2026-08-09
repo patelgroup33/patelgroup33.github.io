@@ -3,7 +3,6 @@ import Background from "@/components/Background";
 import Cursor from "@/components/Cursor";
 import HudOverlay from "@/components/HudOverlay";
 import Hero from "@/components/Hero";
-import SectionInit from "@/components/SectionInit";
 import SectionEngineer from "@/components/SectionEngineer";
 import SectionCreator from "@/components/SectionCreator";
 import SectionExperience from "@/components/SectionExperience";
@@ -21,9 +20,8 @@ export default function Page() {
       <main className="relative">
         <Hero />
 
-        {/* transition seam — the boot section rises out of the hero's collapse */}
+        {/* the avatar scrolls away and the content rises over the living backdrop */}
         <div className="relative z-10 bg-gradient-to-b from-transparent via-ink/80 to-ink">
-          <SectionInit />
           <SectionEngineer />
           <SectionCreator />
         </div>

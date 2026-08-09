@@ -86,7 +86,7 @@ export default function SectionContact() {
             target={c.label !== "EMAIL" ? "_blank" : undefined}
             rel="noopener noreferrer"
             onMouseEnter={() => sound.hover()}
-            className="channel bracket glass-strong glass absolute left-1/2 top-1/2 z-30 flex min-w-[150px] flex-col rounded-lg px-4 py-3"
+            className="channel bracket glass-strong glass absolute left-1/2 top-1/2 z-30 hidden min-w-[150px] flex-col rounded-lg px-4 py-3 sm:flex"
             style={{
               transform: active
                 ? `translate(-50%,-50%) rotate(${c.angle}deg) translateY(-230px) rotate(${-c.angle}deg)`
@@ -102,6 +102,42 @@ export default function SectionContact() {
             <span className="text-sm text-white">{c.value}</span>
           </a>
         ))}
+      </div>
+
+      {/* mobile: channels stack on-screen below the circle instead of radiating off-screen */}
+      <div
+        className="w-full max-w-sm overflow-hidden sm:hidden"
+        style={{
+          maxHeight: active ? 340 : 0,
+          opacity: active ? 1 : 0,
+          pointerEvents: active ? "auto" : "none",
+          transition: "max-height 0.5s ease, opacity 0.4s ease",
+        }}
+      >
+        <div className="mt-8 space-y-3">
+          {channels.map((c, i) => (
+            <a
+              key={c.label}
+              href={c.href}
+              target={c.label !== "EMAIL" ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="bracket glass-strong glass relative flex items-center justify-between rounded-lg px-5 py-4"
+              style={{
+                transform: active ? "translateY(0)" : "translateY(14px)",
+                opacity: active ? 1 : 0,
+                transition: `all 0.45s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.07}s`,
+              }}
+            >
+              <span className="b-bl" />
+              <span className="b-br" />
+              <span className="flex flex-col">
+                <span className="mono text-[9px] text-neon/70">{c.label}</span>
+                <span className="text-sm text-white">{c.value}</span>
+              </span>
+              <span className="text-lg text-neon">→</span>
+            </a>
+          ))}
+        </div>
       </div>
 
       <p className="mono mt-16 text-center text-[10px] leading-relaxed text-white/40">

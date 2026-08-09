@@ -18,7 +18,48 @@ class SoundEngine {
     this.ctx = new AC();
     this.master = this.ctx.createGain();
     this.master.gain.value = 0.16;
+    // dry path
     this.master.connect(this.ctx.destination);
+    // subtle reverb send — gives every cue a shared, spacious "OS" character
+    const reverb = this.ctx.createConvolver();
+    reverb.buffer = this.makeImpulse(0.6, 2.4);
+    const wet = this.ctx.createGain();
+    wet.gain.value = 0.16;
+    this.master.connect(reverb);
+    reverb.connect(wet);
+    wet.connect(this.ctx.destination);
+  }
+
+  /** Synthesized impulse response for the reverb (no asset needed). */
+  private makeImpulse(dur: number, decay: number) {
+    const rate = this.ctx!.sampleRate;
+    const len = Math.floor(rate * dur);
+    const buf = this.ctx!.createBuffer(2, len, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++) {
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+    }
+    return buf;
+  }
+
+  /** Pitch-glide sine used for swells inside richer cues. */
+  private swell(f0: number, f1: number, dur: number, gain: number) {
+    if (!this.enabled || !this.ctx || !this.master) return;
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(f0, t);
+    osc.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(gain, t + dur * 0.3);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g);
+    g.connect(this.master);
+    osc.start(t);
+    osc.stop(t + dur + 0.02);
   }
 
   setEnabled(on: boolean) {
@@ -110,6 +151,35 @@ class SoundEngine {
   transition() {
     this.sweep();
     this.reveal();
+  }
+
+  /** Jarvis uplink opening — ascending arpeggio + swell + whoosh. */
+  powerUp() {
+    if (!this.enabled || !this.ctx) return;
+    [392, 523, 659, 784, 1046].forEach((f, i) =>
+      setTimeout(() => this.blip(f, 0.16, "sine", 0.16), i * 55)
+    );
+    this.swell(110, 340, 0.55, 0.13);
+    this.sweep();
+  }
+
+  /** Uplink closing — descending, softer. */
+  powerDown() {
+    if (!this.enabled || !this.ctx) return;
+    [784, 587, 440, 294].forEach((f, i) =>
+      setTimeout(() => this.blip(f, 0.14, "sine", 0.11), i * 50)
+    );
+  }
+
+  /** Soft counting tick — call repeatedly while a number animates. */
+  count() {
+    this.blip(1150 + Math.random() * 350, 0.014, "triangle", 0.05);
+  }
+
+  /** Bright confirm blip when a value/counter lands. */
+  confirm() {
+    this.blip(880, 0.07, "sine", 0.13);
+    setTimeout(() => this.blip(1320, 0.12, "sine", 0.11), 45);
   }
 }
 

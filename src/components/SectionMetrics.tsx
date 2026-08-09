@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { registerGsap, gsap } from "@/lib/gsap";
 import { METRICS } from "@/data/content";
+import { sound } from "@/lib/sound";
 import { Section, Kicker } from "./ui";
 
 export default function SectionMetrics() {
@@ -34,11 +35,21 @@ function Counter({
     registerGsap();
     const ctx = gsap.context(() => {
       const obj = { v: 0 };
+      let lastTick = 0;
       gsap.to(obj, {
         v: value,
         duration: 2,
         ease: "power2.out",
-        onUpdate: () => setN(Math.round(obj.v)),
+        onUpdate: () => {
+          setN(Math.round(obj.v));
+          // soft ticks while the number climbs (throttled)
+          const now = performance.now();
+          if (sound.enabled && now - lastTick > 85) {
+            sound.count();
+            lastTick = now;
+          }
+        },
+        onComplete: () => sound.confirm(),
         scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
       });
     }, ref);

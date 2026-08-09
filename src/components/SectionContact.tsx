@@ -57,10 +57,14 @@ export default function SectionContact() {
         {/* center button */}
         <button
           data-cursor
-          onClick={() => {
-            setActive((v) => !v);
-            sound.click();
-          }}
+          onClick={() =>
+            setActive((v) => {
+              const next = !v;
+              if (next) sound.powerUp();
+              else sound.powerDown();
+              return next;
+            })
+          }
           onMouseEnter={() => sound.hover()}
           className="jarvis-btn group relative z-20 flex h-40 w-40 flex-col items-center justify-center rounded-full sm:h-48 sm:w-48"
         >

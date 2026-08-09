@@ -134,7 +134,7 @@ export default function Hero() {
               className="relative z-10 aspect-square w-[52vw] max-w-[300px] overflow-hidden rounded-full sm:w-[40vw] md:w-[27vw]"
               style={{
                 boxShadow:
-                  "0 0 0 1px rgba(255,46,46,0.5), 0 0 70px -6px rgba(255,46,46,0.45), inset 0 0 60px rgba(139,0,0,0.4)",
+                  "0 0 0 1px rgba(34,211,238,0.5), 0 0 70px -6px rgba(34,211,238,0.45), inset 0 0 60px rgba(12,74,110,0.4)",
               }}
             >
               <video
@@ -149,13 +149,13 @@ export default function Hero() {
               {/* red duotone + vignette over the face */}
               <div
                 className="absolute inset-0 mix-blend-color"
-                style={{ background: "rgba(193,18,31,0.35)" }}
+                style={{ background: "rgba(14,165,233,0.35)" }}
               />
               <div
                 className="absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(60% 60% at 50% 40%, transparent 45%, rgba(5,5,6,0.75) 100%)",
+                    "radial-gradient(60% 60% at 50% 40%, transparent 45%, rgba(5,8,15,0.75) 100%)",
                 }}
               />
               {/* scanning line */}
@@ -165,7 +165,7 @@ export default function Hero() {
                   className="absolute left-0 top-0 h-16 w-full"
                   style={{
                     background:
-                      "linear-gradient(180deg, transparent, rgba(255,46,46,0.25), transparent)",
+                      "linear-gradient(180deg, transparent, rgba(34,211,238,0.25), transparent)",
                   }}
                 />
               </div>
@@ -212,7 +212,7 @@ export default function Hero() {
           position: relative;
           display: inline-block;
           color: #fff;
-          text-shadow: 0 0 14px rgba(255, 46, 46, 0.55);
+          text-shadow: 0 0 14px rgba(34,211,238, 0.55);
           animation: roleFlash 0.5s steps(1, end) both;
         }
         /* red glitch slice that resolves on each swap */
@@ -221,7 +221,7 @@ export default function Hero() {
           position: absolute;
           left: 0;
           top: 0;
-          color: #ff2e2e;
+          color: #22D3EE;
           pointer-events: none;
           animation: roleSplit 0.5s steps(2, end) 1;
         }
@@ -261,11 +261,11 @@ function Rings() {
   return (
     <div className="relative h-[80vw] max-h-[620px] w-[80vw] max-w-[620px]">
       <svg viewBox="0 0 600 600" className="absolute inset-0 h-full w-full animate-spin-slow">
-        <circle cx="300" cy="300" r="290" fill="none" stroke="rgba(255,46,46,0.18)" strokeWidth="1" strokeDasharray="4 10" />
-        <circle cx="300" cy="300" r="250" fill="none" stroke="rgba(193,18,31,0.28)" strokeWidth="1" strokeDasharray="60 20 8 20" />
+        <circle cx="300" cy="300" r="290" fill="none" stroke="rgba(34,211,238,0.18)" strokeWidth="1" strokeDasharray="4 10" />
+        <circle cx="300" cy="300" r="250" fill="none" stroke="rgba(14,165,233,0.28)" strokeWidth="1" strokeDasharray="60 20 8 20" />
       </svg>
       <svg viewBox="0 0 600 600" className="absolute inset-0 h-full w-full animate-spin-reverse">
-        <circle cx="300" cy="300" r="215" fill="none" stroke="rgba(255,46,46,0.22)" strokeWidth="1.5" strokeDasharray="2 14" />
+        <circle cx="300" cy="300" r="215" fill="none" stroke="rgba(34,211,238,0.22)" strokeWidth="1.5" strokeDasharray="2 14" />
         {Array.from({ length: 12 }).map((_, i) => {
           const a = (i / 12) * Math.PI * 2;
           const r = (n: number) => Math.round(n * 100) / 100;
@@ -276,7 +276,7 @@ function Rings() {
               y1={r(300 + Math.sin(a) * 205)}
               x2={r(300 + Math.cos(a) * 225)}
               y2={r(300 + Math.sin(a) * 225)}
-              stroke="rgba(255,46,46,0.5)"
+              stroke="rgba(34,211,238,0.5)"
               strokeWidth="1.5"
             />
           );

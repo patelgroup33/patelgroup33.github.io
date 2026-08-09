@@ -68,7 +68,7 @@ function Counter({
         className="pointer-events-none absolute -inset-8 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background:
-            "radial-gradient(50% 50% at 50% 100%, rgba(255,46,46,0.25), transparent 70%)",
+            "radial-gradient(50% 50% at 50% 100%, rgba(34,211,238,0.25), transparent 70%)",
         }}
       />
       <div className="relative flex items-baseline">
@@ -86,7 +86,7 @@ function Counter({
           className="h-full rounded-full transition-[width] duration-1000"
           style={{
             width: `${Math.min(100, (n / value) * 100)}%`,
-            background: "linear-gradient(90deg,#8B0000,#FF2E2E)",
+            background: "linear-gradient(90deg,#0C4A6E,#22D3EE)",
           }}
         />
       </div>

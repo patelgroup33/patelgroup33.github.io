@@ -87,12 +87,12 @@ export default function Background() {
         if (ln.y > 1.1) ln.y = -0.1;
         const py = ln.y * h;
         const grad = ctx.createLinearGradient(0, py - 40, 0, py + 40);
-        grad.addColorStop(0, "rgba(255,46,46,0)");
-        grad.addColorStop(0.5, `rgba(255,46,46,${0.10 * ln.w})`);
-        grad.addColorStop(1, "rgba(255,46,46,0)");
+        grad.addColorStop(0, "rgba(34,211,238,0)");
+        grad.addColorStop(0.5, `rgba(34,211,238,${0.10 * ln.w})`);
+        grad.addColorStop(1, "rgba(34,211,238,0)");
         ctx.fillStyle = grad;
         ctx.fillRect(0, py - 40, w, 80);
-        ctx.fillStyle = `rgba(255,80,80,${0.18 * ln.w})`;
+        ctx.fillStyle = `rgba(90,220,255,${0.18 * ln.w})`;
         ctx.fillRect(0, py, w, 1);
       }
 
@@ -121,7 +121,7 @@ export default function Background() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,${80 + p.r * 30},${80 + p.r * 20},${p.a})`;
+        ctx.fillStyle = `rgba(${90 + p.r * 20},${200 + p.r * 20},255,${p.a})`;
         ctx.fill();
 
         // link to nearby
@@ -132,7 +132,7 @@ export default function Background() {
           const d2 = dx * dx + dy * dy;
           if (d2 < 11000) {
             const o = (1 - d2 / 11000) * 0.22;
-            ctx.strokeStyle = `rgba(193,18,31,${o})`;
+            ctx.strokeStyle = `rgba(14,165,233,${o})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -174,7 +174,7 @@ export default function Background() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(80% 55% at 50% 0%, rgba(139,0,0,0.28) 0%, rgba(80,0,0,0.10) 32%, rgba(5,5,6,0) 62%), radial-gradient(60% 50% at 85% 90%, rgba(193,18,31,0.16) 0%, rgba(5,5,6,0) 55%), radial-gradient(50% 40% at 10% 80%, rgba(139,0,0,0.14) 0%, rgba(5,5,6,0) 55%)",
+            "radial-gradient(80% 55% at 50% 0%, rgba(12,74,110,0.28) 0%, rgba(8,47,73,0.12) 32%, rgba(5,8,15,0) 62%), radial-gradient(60% 50% at 85% 90%, rgba(14,165,233,0.16) 0%, rgba(5,8,15,0) 55%), radial-gradient(50% 40% at 10% 80%, rgba(12,74,110,0.14) 0%, rgba(5,8,15,0) 55%)",
         }}
       />
       {/* perspective grid */}
@@ -183,7 +183,7 @@ export default function Background() {
         className="absolute left-1/2 top-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2 opacity-[0.55]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,46,46,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,46,46,0.07) 1px, transparent 1px)",
+            "linear-gradient(rgba(34,211,238,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.07) 1px, transparent 1px)",
           backgroundSize: "58px 58px",
           maskImage:
             "radial-gradient(70% 60% at 50% 45%, #000 30%, transparent 78%)",

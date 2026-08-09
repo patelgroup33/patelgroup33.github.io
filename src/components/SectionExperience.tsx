@@ -112,7 +112,7 @@ export default function SectionExperience() {
                   className="exp-glow pointer-events-none absolute -inset-8 blur-3xl"
                   style={{
                     background:
-                      "radial-gradient(50% 50% at 50% 40%, rgba(255,46,46,0.22), transparent 70%)",
+                      "radial-gradient(50% 50% at 50% 40%, rgba(34,211,238,0.22), transparent 70%)",
                   }}
                 />
                 <ExpCardBody job={job} index={i} />

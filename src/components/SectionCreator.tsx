@@ -74,7 +74,7 @@ function ProjectCard({
             className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,46,46,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,46,46,0.10) 1px, transparent 1px)",
+                "linear-gradient(rgba(34,211,238,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.10) 1px, transparent 1px)",
               backgroundSize: "26px 26px",
             }}
           />
@@ -83,7 +83,7 @@ function ProjectCard({
           className="layer layer-2 pointer-events-none absolute -inset-10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(50% 50% at 50% 30%, rgba(255,46,46,0.28), transparent 70%)",
+              "radial-gradient(50% 50% at 50% 30%, rgba(34,211,238,0.28), transparent 70%)",
           }}
         />
 

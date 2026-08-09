@@ -65,7 +65,7 @@ export default function Cursor() {
       <div
         ref={dot}
         className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-1.5 w-1.5 rounded-full bg-neon md:block"
-        style={{ boxShadow: "0 0 10px 2px rgba(255,46,46,0.9)" }}
+        style={{ boxShadow: "0 0 10px 2px rgba(34,211,238,0.9)" }}
       />
       <div
         ref={ring}
@@ -79,9 +79,9 @@ export default function Cursor() {
         .cursor-ring.cursor-lock {
           width: 48px;
           height: 48px;
-          border-color: rgba(255, 46, 46, 0.9);
-          background: rgba(255, 46, 46, 0.08);
-          box-shadow: 0 0 24px rgba(255, 46, 46, 0.4);
+          border-color: rgba(34,211,238, 0.9);
+          background: rgba(34,211,238, 0.08);
+          box-shadow: 0 0 24px rgba(34,211,238, 0.4);
         }
         .cursor-ring.cursor-down {
           width: 20px;

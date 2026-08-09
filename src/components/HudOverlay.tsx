@@ -124,8 +124,8 @@ export default function HudOverlay() {
           className="h-full origin-left"
           style={{
             transform: `scaleX(${progress})`,
-            background: "linear-gradient(90deg,#8B0000,#C1121F,#FF2E2E)",
-            boxShadow: "0 0 12px rgba(255,46,46,0.7)",
+            background: "linear-gradient(90deg,#0C4A6E,#0EA5E9,#22D3EE)",
+            boxShadow: "0 0 12px rgba(34,211,238,0.7)",
           }}
         />
       </div>
@@ -152,7 +152,7 @@ export default function HudOverlay() {
             <span
               className={`h-2 w-2 rounded-full border transition-all duration-300 ${
                 active === n.id
-                  ? "scale-125 border-neon bg-neon shadow-[0_0_10px_rgba(255,46,46,0.8)]"
+                  ? "scale-125 border-neon bg-neon shadow-[0_0_10px_rgba(34,211,238,0.8)]"
                   : "border-white/30 bg-transparent group-hover:border-neon"
               }`}
             />

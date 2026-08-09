@@ -33,10 +33,10 @@ export default function SectionContact() {
 
         {/* rotating decorative rings */}
         <svg className="absolute inset-0 h-full w-full animate-spin-slow" viewBox="0 0 400 400">
-          <circle cx="200" cy="200" r="195" fill="none" stroke="rgba(255,46,46,0.2)" strokeWidth="1" strokeDasharray="3 12" />
+          <circle cx="200" cy="200" r="195" fill="none" stroke="rgba(34,211,238,0.2)" strokeWidth="1" strokeDasharray="3 12" />
         </svg>
         <svg className="absolute inset-0 h-full w-full animate-spin-reverse" viewBox="0 0 400 400">
-          <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(193,18,31,0.3)" strokeWidth="1.5" strokeDasharray="40 14 6 14" />
+          <circle cx="200" cy="200" r="160" fill="none" stroke="rgba(14,165,233,0.3)" strokeWidth="1.5" strokeDasharray="40 14 6 14" />
           {Array.from({ length: 24 }).map((_, i) => {
             const a = (i / 24) * Math.PI * 2;
             const r = (n: number) => Math.round(n * 100) / 100;
@@ -47,7 +47,7 @@ export default function SectionContact() {
                 y1={r(200 + Math.sin(a) * 150)}
                 x2={r(200 + Math.cos(a) * 162)}
                 y2={r(200 + Math.sin(a) * 162)}
-                stroke="rgba(255,46,46,0.4)"
+                stroke="rgba(34,211,238,0.4)"
                 strokeWidth="1.5"
               />
             );
@@ -154,22 +154,22 @@ export default function SectionContact() {
 
       <style jsx>{`
         .jarvis-btn {
-          background: radial-gradient(circle at 50% 35%, rgba(255, 46, 46, 0.35), rgba(139, 0, 0, 0.15));
-          border: 1px solid rgba(255, 46, 46, 0.5);
-          box-shadow: 0 0 40px -4px rgba(255, 46, 46, 0.5), inset 0 0 40px rgba(139, 0, 0, 0.4);
+          background: radial-gradient(circle at 50% 35%, rgba(34,211,238, 0.35), rgba(12,74,110, 0.15));
+          border: 1px solid rgba(34,211,238, 0.5);
+          box-shadow: 0 0 40px -4px rgba(34,211,238, 0.5), inset 0 0 40px rgba(12,74,110, 0.4);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .jarvis-btn:hover {
           transform: scale(1.06);
-          box-shadow: 0 0 70px -2px rgba(255, 46, 46, 0.8), inset 0 0 50px rgba(193, 18, 31, 0.6);
+          box-shadow: 0 0 70px -2px rgba(34,211,238, 0.8), inset 0 0 50px rgba(14,165,233, 0.6);
         }
         .jarvis-core {
-          background: radial-gradient(circle, rgba(255, 46, 46, 0.25), transparent 65%);
+          background: radial-gradient(circle, rgba(34,211,238, 0.25), transparent 65%);
           animation: pulseGlow 2.4s ease-in-out infinite;
         }
         .jarvis-pulse {
-          border: 1px solid rgba(255, 46, 46, 0.4);
-          box-shadow: 0 0 60px rgba(255, 46, 46, 0.2);
+          border: 1px solid rgba(34,211,238, 0.4);
+          box-shadow: 0 0 60px rgba(34,211,238, 0.2);
           animation: ringPulse 3s ease-out infinite;
         }
         .jarvis-pulse.is-active {

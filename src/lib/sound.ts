@@ -7,6 +7,8 @@
 class SoundEngine {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
+  private ambient: { nodes: AudioScheduledSourceNode[]; gain: GainNode } | null =
+    null;
   enabled = false;
 
   private ensure() {
@@ -68,7 +70,75 @@ class SoundEngine {
       this.ensure();
       this.ctx?.resume();
       this.startup();
+      this.startAmbient();
+    } else {
+      this.stopAmbient();
     }
+  }
+
+  /** Low, always-on ambient drone bed while sound is enabled. */
+  private startAmbient() {
+    if (!this.ctx || !this.master || this.ambient) return;
+    const t = this.ctx.currentTime;
+
+    const bus = this.ctx.createGain();
+    bus.gain.setValueAtTime(0.0001, t);
+    bus.gain.exponentialRampToValueAtTime(0.22, t + 2.5); // slow fade-in
+
+    const lp = this.ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 440;
+    lp.Q.value = 1.1;
+
+    // slow filter drift so the bed subtly breathes
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    lfo.frequency.value = 0.05;
+    lfoGain.gain.value = 150;
+    lfo.connect(lfoGain);
+    lfoGain.connect(lp.frequency);
+    lfo.start();
+
+    const nodes: AudioScheduledSourceNode[] = [lfo];
+    const specs: [number, OscillatorType, number][] = [
+      [55, "sine", 0.7],
+      [110, "sine", 0.6],
+      [165, "sine", 0.3],
+      [220, "triangle", 0.16],
+    ];
+    specs.forEach(([f, type, g], i) => {
+      const osc = this.ctx!.createOscillator();
+      osc.type = type;
+      osc.frequency.value = f;
+      osc.detune.value = (i - 1.5) * 5;
+      const vg = this.ctx!.createGain();
+      vg.gain.value = g;
+      osc.connect(vg);
+      vg.connect(lp);
+      osc.start();
+      nodes.push(osc);
+    });
+
+    lp.connect(bus);
+    bus.connect(this.master);
+    this.ambient = { nodes, gain: bus };
+  }
+
+  private stopAmbient() {
+    if (!this.ctx || !this.ambient) return;
+    const t = this.ctx.currentTime;
+    const { nodes, gain } = this.ambient;
+    gain.gain.cancelScheduledValues(t);
+    gain.gain.setValueAtTime(Math.max(gain.gain.value, 0.0001), t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+    nodes.forEach((n) => {
+      try {
+        n.stop(t + 0.7);
+      } catch {
+        /* already stopped */
+      }
+    });
+    this.ambient = null;
   }
 
   private blip(freq: number, dur: number, type: OscillatorType, gain = 0.5) {

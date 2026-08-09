@@ -62,9 +62,9 @@ export default function SectionProcess() {
           />
           <defs>
             <linearGradient id="pgrad" x1="0" y1="0" x2="0" y2="1000" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#8B0000" />
-              <stop offset="0.5" stopColor="#FF2E2E" />
-              <stop offset="1" stopColor="#C1121F" />
+              <stop offset="0" stopColor="#0C4A6E" />
+              <stop offset="0.5" stopColor="#22D3EE" />
+              <stop offset="1" stopColor="#0EA5E9" />
             </linearGradient>
           </defs>
         </svg>
@@ -97,7 +97,7 @@ export default function SectionProcess() {
 
               {/* node dot — on the left rail (mobile) / centre (desktop) */}
               <div className="absolute left-4 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 md:left-1/2">
-                <div className="relative h-4 w-4 rounded-full bg-neon shadow-[0_0_18px_rgba(255,46,46,0.9)]">
+                <div className="relative h-4 w-4 rounded-full bg-neon shadow-[0_0_18px_rgba(34,211,238,0.9)]">
                   <div className="absolute inset-0 animate-ping rounded-full bg-neon/60" />
                 </div>
               </div>

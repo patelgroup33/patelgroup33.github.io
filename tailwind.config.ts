@@ -5,12 +5,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        blood: "#8B0000",
-        crimson: "#C1121F",
-        neon: "#FF2E2E",
+        blood: "#0C4A6E",
+        crimson: "#0EA5E9",
+        neon: "#22D3EE",
         silver: "#C7CCD1",
         metal: "#1a1a1e",
-        ink: "#050506",
+        ink: "#05080f",
       },
       fontFamily: {
         display: ["var(--font-space)", "system-ui", "sans-serif"],

@@ -13,7 +13,34 @@ export default function Hero() {
   const topText = useRef<HTMLDivElement>(null);
   const roleWrap = useRef<HTMLDivElement>(null);
   const scanRef = useRef<HTMLDivElement>(null);
+  const videoEl = useRef<HTMLVideoElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
+
+  // Force the hero video to autoplay muted+inline on mobile. React's `muted`
+  // attribute isn't reliably reflected to the DOM property, so iOS treats the
+  // clip as unmuted, blocks autoplay and shows a play button. Set it here and
+  // retry play() on the first user gesture / when the tab becomes visible.
+  useEffect(() => {
+    const v = videoEl.current;
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    const play = () => v.play().catch(() => {});
+    play();
+    const onGesture = () => play();
+    const onVis = () => {
+      if (!document.hidden) play();
+    };
+    window.addEventListener("touchstart", onGesture, { passive: true });
+    window.addEventListener("pointerdown", onGesture);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      window.removeEventListener("touchstart", onGesture);
+      window.removeEventListener("pointerdown", onGesture);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
 
   // Morphing job titles
   useEffect(() => {
@@ -138,13 +165,21 @@ export default function Hero() {
               }}
             >
               <video
-                className="h-full w-full scale-[1.18] object-cover"
+                ref={videoEl}
+                className="pointer-events-none h-full w-full scale-[1.18] object-cover"
                 src="/hero.mp4"
                 autoPlay
                 muted
                 loop
                 playsInline
                 preload="auto"
+                controls={false}
+                disablePictureInPicture
+                onCanPlay={(e) => {
+                  const v = e.currentTarget;
+                  v.muted = true;
+                  v.play().catch(() => {});
+                }}
               />
               {/* red duotone + vignette over the face */}
               <div

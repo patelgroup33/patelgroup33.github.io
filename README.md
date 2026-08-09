@@ -38,22 +38,16 @@ npm run build
 
 ## Deploy
 
-The site is a static export hosted on **GitHub Pages** at
-https://patelgroup33.github.io/ (served from the `gh-pages` branch; `main` holds
-the source). To ship an update after editing:
+Hosted on **GitHub Pages** at https://patelgroup33.github.io/, with **automatic
+deploys**. Every push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
+which builds the static export and publishes it through GitHub Pages (Actions
+source). So shipping an update is just:
 
 ```bash
-npm run deploy
+git push
 ```
 
-That builds `out/` and force-pushes it to `gh-pages`, then triggers a Pages build.
-
-**Optional — CI auto-deploy:** a ready-made GitHub Actions workflow lives at
-`deploy/github-pages-workflow.yml`. To have every push to `main` rebuild and
-deploy automatically, grant the CLI the `workflow` scope once
-(`gh auth refresh -s workflow`), then move that file to
-`.github/workflows/deploy.yml` and push. After that you can retire the manual
-`gh-pages` branch.
+No branches to manage, no manual steps.
 
 ## The journey (scroll top → bottom)
 

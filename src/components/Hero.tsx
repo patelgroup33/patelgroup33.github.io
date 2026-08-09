@@ -137,13 +137,11 @@ export default function Hero() {
     return () => window.clearTimeout(fallback);
   }, []);
 
-  // uplink materialises (opacity/scale are CSS-driven off `phase` below),
-  // then auto-reveals the links
+  // uplink materialises (opacity/scale are CSS-driven off `phase` below). Links
+  // stay closed — the user taps the core to open them (the full Jarvis moment).
   useEffect(() => {
     if (phase !== "uplink") return;
-    sound.powerUp();
-    const t = window.setTimeout(() => setLinksOpen(true), 560);
-    return () => window.clearTimeout(t);
+    sound.sweep();
   }, [phase]);
 
   const toggleLinks = () =>
@@ -352,23 +350,22 @@ export default function Hero() {
         </div>
       ) : (
         <div
-          className="flex w-full max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:justify-center"
+          className={`flex w-full max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:justify-center ${
+            linksOpen ? "links-in" : ""
+          }`}
           style={{
             opacity: linksOpen ? 1 : 0,
-            transform: linksOpen ? "translateY(0)" : "translateY(14px)",
             pointerEvents: linksOpen ? "auto" : "none",
-            transition: "opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
-          {channels.map((c, i) => (
+          {channels.map((c) => (
             <a
               key={c.label}
               href={c.href}
               target={c.label !== "EMAIL" ? "_blank" : undefined}
               rel="noopener noreferrer"
               onMouseEnter={() => sound.hover()}
-              className="bracket glass-strong glass group relative flex flex-1 items-center justify-between gap-4 rounded-lg px-4 py-3 transition-all duration-300 hover:border-neon/60"
-              style={{ transitionDelay: `${i * 60}ms` }}
+              className="bracket glass-strong glass group relative flex flex-1 items-center justify-between gap-4 rounded-lg px-4 py-3 transition-colors duration-300 hover:border-neon/60"
             >
               <span className="b-bl" />
               <span className="b-br" />
@@ -426,6 +423,13 @@ export default function Hero() {
         @keyframes upScale {
           from { transform: scale(0.82); }
           to { transform: scale(1); }
+        }
+        .links-in {
+          animation: linksIn 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes linksIn {
+          from { transform: translateY(16px); }
+          to { transform: translateY(0); }
         }
         .jarvis-btn {
           background: radial-gradient(circle at 50% 35%, rgba(34, 211, 238, 0.35), rgba(12, 74, 110, 0.15));

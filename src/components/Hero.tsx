@@ -233,14 +233,14 @@ export default function Hero() {
                 className="relative h-full w-full"
                 style={{
                   WebkitMaskImage:
-                    "radial-gradient(circle at 50% 45%, #000 28%, rgba(0,0,0,0.5) 48%, transparent 66%)",
+                    "radial-gradient(circle at 50% 44%, #000 48%, rgba(0,0,0,0.6) 68%, transparent 88%)",
                   maskImage:
-                    "radial-gradient(circle at 50% 45%, #000 28%, rgba(0,0,0,0.5) 48%, transparent 66%)",
+                    "radial-gradient(circle at 50% 44%, #000 48%, rgba(0,0,0,0.6) 68%, transparent 88%)",
                 }}
               >
                 <video
                   ref={videoEl}
-                  className="pointer-events-none h-full w-full scale-[1.12] object-cover"
+                  className="pointer-events-none h-full w-full object-cover"
                   src="/hero.mp4"
                   autoPlay
                   muted

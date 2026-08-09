@@ -13,10 +13,12 @@ const NAV = [
 
 export default function HudOverlay() {
   const [progress, setProgress] = useState(0);
-  const [soundOn, setSoundOn] = useState(false);
   const [active, setActive] = useState("engineer");
 
   useEffect(() => {
+    // sound is always on — arm it on the first user interaction
+    sound.enableOnFirstGesture();
+
     let lastY = window.scrollY;
     let acc = 0;
     let lastTick = 0;
@@ -102,18 +104,10 @@ export default function HudOverlay() {
           <span className="mono hidden text-[10px] text-white/40 sm:inline">
             {String(Math.round(progress * 100)).padStart(3, "0")}%
           </span>
-          <button
-            data-cursor
-            onClick={() => {
-              const next = !soundOn;
-              setSoundOn(next);
-              sound.setEnabled(next);
-            }}
-            className="mono flex items-center gap-2 rounded-full border border-neon/30 bg-black/40 px-3 py-1.5 text-[10px] text-white/70 transition-colors hover:border-neon hover:text-neon"
-          >
-            <span className={`h-1.5 w-1.5 rounded-full ${soundOn ? "bg-neon" : "bg-white/30"}`} />
-            {soundOn ? "SOUND ON" : "MUTED"}
-          </button>
+          <span className="mono flex items-center gap-2 rounded-full border border-neon/30 bg-black/40 px-3 py-1.5 text-[10px] text-neon/80">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-neon" />
+            AUDIO
+          </span>
         </div>
       </header>
 
@@ -136,7 +130,7 @@ export default function HudOverlay() {
             key={n.id}
             data-cursor
             onClick={() => go(n.id)}
-            onMouseEnter={() => soundOn && sound.hover()}
+            onMouseEnter={() => sound.hover()}
             className="pointer-events-auto group flex items-center justify-end gap-3"
           >
             <span

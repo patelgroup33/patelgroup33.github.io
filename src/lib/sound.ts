@@ -9,6 +9,7 @@ class SoundEngine {
   private master: GainNode | null = null;
   private ambient: { nodes: AudioScheduledSourceNode[]; gain: GainNode } | null =
     null;
+  private started = false;
   enabled = false;
 
   private ensure() {
@@ -64,16 +65,35 @@ class SoundEngine {
     osc.stop(t + dur + 0.02);
   }
 
-  setEnabled(on: boolean) {
-    this.enabled = on;
-    if (on) {
-      this.ensure();
-      this.ctx?.resume();
-      this.startup();
-      this.startAmbient();
-    } else {
-      this.stopAmbient();
-    }
+  /** Arm audio. Browsers require a user gesture before a context can play. */
+  start() {
+    if (this.started) return;
+    this.started = true;
+    this.enabled = true;
+    this.ensure();
+    this.ctx?.resume();
+    this.startup();
+    this.startAmbient();
+  }
+
+  /**
+   * Sound is always on — there is no mute. Audio can't legally begin before the
+   * first interaction, so arm it on the first gesture (click / scroll / touch /
+   * key) and keep it running for the rest of the session.
+   */
+  enableOnFirstGesture() {
+    if (typeof window === "undefined" || this.started) return;
+    const go = () => {
+      this.start();
+      window.removeEventListener("pointerdown", go);
+      window.removeEventListener("keydown", go);
+      window.removeEventListener("touchstart", go);
+      window.removeEventListener("wheel", go);
+    };
+    window.addEventListener("pointerdown", go);
+    window.addEventListener("keydown", go);
+    window.addEventListener("touchstart", go, { passive: true });
+    window.addEventListener("wheel", go, { passive: true });
   }
 
   /** Low, always-on ambient drone bed while sound is enabled. */

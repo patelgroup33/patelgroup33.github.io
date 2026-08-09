@@ -218,54 +218,58 @@ export default function Hero() {
               <Rings />
             </div>
 
+            {/* the face — floats freely, edges feathered to transparent, no boundary */}
             <div
               data-hud
-              className="relative z-10 aspect-square w-[70vw] max-w-[290px] overflow-hidden rounded-full sm:w-[300px]"
-              style={{
-                boxShadow:
-                  "0 0 0 1px rgba(34,211,238,0.5), 0 0 70px -6px rgba(34,211,238,0.45), inset 0 0 60px rgba(12,74,110,0.4)",
-              }}
+              className="relative z-10 flex aspect-square w-[76vw] max-w-[340px] items-center justify-center sm:w-[360px]"
             >
-              <video
-                ref={videoEl}
-                className="pointer-events-none h-full w-full scale-[1.18] object-cover"
-                src="/hero.mp4"
-                autoPlay
-                muted
-                playsInline
-                preload="auto"
-                controls={false}
-                disablePictureInPicture
-                onCanPlay={(e) => {
-                  const v = e.currentTarget;
-                  v.muted = true;
-                  v.play().catch(() => {});
-                }}
-              />
+              {/* soft luminous halo behind the face (no hard edge) */}
               <div
-                className="absolute inset-0 mix-blend-color"
-                style={{ background: "rgba(14,165,233,0.35)" }}
-              />
-              <div
-                className="absolute inset-0"
+                className="pointer-events-none absolute -inset-6 -z-10 blur-2xl"
                 style={{
                   background:
-                    "radial-gradient(60% 60% at 50% 40%, transparent 45%, rgba(5,8,15,0.75) 100%)",
+                    "radial-gradient(circle at 50% 46%, rgba(34,211,238,0.22), transparent 60%)",
                 }}
               />
-              <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                <div
-                  ref={scanRef}
-                  className="absolute left-0 top-0 h-16 w-full"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, transparent, rgba(34,211,238,0.25), transparent)",
+              <div
+                className="relative h-full w-full"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(circle at 50% 45%, #000 28%, rgba(0,0,0,0.5) 48%, transparent 66%)",
+                  maskImage:
+                    "radial-gradient(circle at 50% 45%, #000 28%, rgba(0,0,0,0.5) 48%, transparent 66%)",
+                }}
+              >
+                <video
+                  ref={videoEl}
+                  className="pointer-events-none h-full w-full scale-[1.12] object-cover"
+                  src="/hero.mp4"
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  controls={false}
+                  disablePictureInPicture
+                  onCanPlay={(e) => {
+                    const v = e.currentTarget;
+                    v.muted = true;
+                    v.play().catch(() => {});
                   }}
                 />
-              </div>
-              <div className="pointer-events-none absolute inset-0">
-                <div className="absolute left-1/2 top-1/2 h-px w-8 -translate-x-1/2 -translate-y-1/2 bg-neon/50" />
-                <div className="absolute left-1/2 top-1/2 h-8 w-px -translate-x-1/2 -translate-y-1/2 bg-neon/50" />
+                <div
+                  className="absolute inset-0 mix-blend-color"
+                  style={{ background: "rgba(14,165,233,0.32)" }}
+                />
+                <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                  <div
+                    ref={scanRef}
+                    className="absolute left-0 top-0 h-16 w-full"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, transparent, rgba(34,211,238,0.22), transparent)",
+                    }}
+                  />
+                </div>
               </div>
             </div>
 
